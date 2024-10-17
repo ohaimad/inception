@@ -1,0 +1,8 @@
+FROM debian:bullseye
+
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+    mariadb-server \
+    mariadb-client \
+
+COPY ./srcs/mariadb/entrypoint.sh /entrypoint.sh
+
