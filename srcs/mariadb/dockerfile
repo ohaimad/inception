@@ -7,18 +7,19 @@ RUN apt-get update && \
     apt-get clean
 
 # Copy the .sh and .sql files to the /var/local/bin/ directory
-COPY your_script.sh /var/local/bin/
-COPY your_database.sql /var/local/bin/
+COPY script.sh /var/local/bin/
+# COPY your_database.sql /var/local/bin/
 
 # Make sure the MariaDB daemon and script have execution permissions
-RUN chmod +x /var/local/bin/your_script.sh && \
+RUN chmod +x /var/local/bin/script.sh && \
     chmod +x /usr/sbin/mysqld
 
 # Run your script to install and configure MariaDB
-RUN /var/local/bin/your_script.sh
+RUN /var/local/bin/script.sh
 
 # Expose the default MariaDB port
 EXPOSE 3306
 
 # Command to run MariaDB and listen on all IPV4 addresses
 CMD ["mysqld", "--bind-address=0.0.0.0"]
+# CMD ["sleep" ,"infinity"]
