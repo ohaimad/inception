@@ -1,8 +1,24 @@
-FROM debian:bullseye
+# Use the official MariaDB base image
+FROM ubuntu:latest
 
-RUN apt-get update && apt-get upgrade -y && apt-get install -y \
-    mariadb-server \
-    mariadb-client \
+# Update package list and install MariaDB server and client
+RUN apt-get update && \
+    apt-get install -y mariadb-server mariadb-client && \
+    apt-get clean
 
-COPY ./srcs/mariadb/entrypoint.sh /entrypoint.sh
+# Copy the .sh and .sql files to the /var/local/bin/ directory
+COPY your_script.sh /var/local/bin/
+COPY your_database.sql /var/local/bin/
 
+# Make sure the MariaDB daemon and script have execution permissions
+RUN chmod +x /var/local/bin/your_script.sh && \
+    chmod +x /usr/sbin/mysqld
+
+# Run your script to install and configure MariaDB
+RUN /var/local/bin/your_script.sh
+
+# Expose the default MariaDB port
+EXPOSE 3306
+
+# Command to run MariaDB and listen on all IPV4 addresses
+CMD ["mysqld", "--bind-address=0.0.0.0"]
