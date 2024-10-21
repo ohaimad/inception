@@ -1,15 +1,17 @@
 FROM debian:bullseye
 
-
-RUN apt update -y 
-
-RUN apt install php-fpm php-mysql -y
-
-RUN apt install curl -y
-
-
+# Update the package list and install necessary packages in one RUN command
+RUN apt update -y && apt upgrade -y
+RUN apt-get install -y php7.4 php-fpm php-mysql mariadb-client curl wget
+RUN mkdir -p /run/php/
+RUN chmod +x /run/php/
+RUN echo "listen=0.0.0.0:9000" >> /etc/php/7.4/fpm/php-fpm.conf
+RUN curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+RUN chmod +x /usr/local/bin/wp
 COPY ./tools/script.sh /
-COPY ./tools/wp-config.php /
-RUN chmod +x /script.sh
 
-CMD [ "/script.sh" ]
+RUN chmod +x /script.sh
+# Copy the php-config.sh script to the root directory
+
+# Define the command to run the php-config.sh script
+CMD ["/script.sh"]

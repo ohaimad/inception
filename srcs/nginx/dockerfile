@@ -2,15 +2,16 @@
 FROM debian:bullseye
 
 # Perform all operations in a single RUN command
-RUN apt-get update && \
-    apt-get install -y openssl && \
-    apt-get clean && \
-    mkdir /etc/nginx/ssl && \
-    cd /etc/nginx/ssl && \
-    openssl genrsa -out /etc/nginx/ssl/mysite.key 2048 && \
-    openssl req -new -key /etc/nginx/ssl/mysite.key -out /etc/nginx/ssl/mysite.csr \
-        -subj "/C=US/ST=State/L=City/O=Organization/OU=Department/CN=ohaimad.42.fr" && \
-    openssl x509 -req -days 365 -in /etc/nginx/ssl/mysite.csr -signkey /etc/nginx/ssl/mysite.key -out /etc/nginx/ssl/mysite.csr
+RUN apt-get update
+RUN apt-get install -y openssl
+RUN apt-get clean
+RUN mkdir -p /etc/nginx/ssl && mkdir -p /var/www/html
+RUN chmod 755 /var/www/html
+RUN cd /etc/nginx/ssl
+RUN openssl genrsa -out /etc/nginx/ssl/mysite.key 2048
+RUN openssl req -new -key /etc/nginx/ssl/mysite.key -out /etc/nginx/ssl/mysite.csr \
+        -subj "/C=US/ST=State/L=City/O=Organization/OU=Department/CN=ohaimad.42.fr"
+RUN openssl x509 -req -days 365 -in /etc/nginx/ssl/mysite.csr -signkey /etc/nginx/ssl/mysite.key -out /etc/nginx/ssl/mysite.csr
  
 # Copy your custom Nginx configuration file, if you have one
 COPY nginx.conf /etc/nginx/nginx.conf

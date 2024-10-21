@@ -2,38 +2,58 @@ version: '3.8'
 
 services:
   mariadb:
-    image: mariadb:latest
+    build:
+      context: ./mariadb
+      dockerfile: Dockerfile
+    image: mariadb:v1
     container_name: mariadb
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: ll
-      MYSQL_USER: ohaimad
-      MYSQL_PASSWORD: 0000
+    env_file:
+      - ./.env  # Correctly placed under the mariadb service
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
       - wp_network
 
   wordpress:
-    image: wordpress:latest
+    build:
+      context: ./wordpress
+      dockerfile: Dockerfile
+    image: wordpress:v1
     container_name: wordpress
     restart: always
-    environment:
-      WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_NAME: ll
-      WORDPRESS_DB_USER: ohaimad
-      WORDPRESS_DB_PASSWORD: 0000
+    env_file:
+      - ./.env  # Correctly placed under the wordpress service
     volumes:
       - wordpress_data:/var/www/html
+    networks:
+      - wp_network
+
+  nginx:
+    build:
+      context: ./nginx  # Assuming the Dockerfile for Nginx is in the same directory
+      dockerfile: Dockerfile  # Specify the Dockerfile name if it's not "Dockerfile"
+    image: nginx:v1
+    container_name: nginx
+    restart: always
     ports:
-      - "8080:80"
+      - "443:443"  # Expose HTTPS
+    volumes:
+      - wordpress_data:/var/www/html  # Ensure this is correctly listed as a volume
     networks:
       - wp_network
 
 volumes:
   mariadb_data:
+    driver_opts:
+      o: bind
+      type: none
+      device: /Users/ohaimad/Desktop/DATA/mdbdata
   wordpress_data:
+    driver_opts:
+      o: bind
+      type: none
+      device: /Users/ohaimad/Desktop/DATA/wdata
 
 networks:
   wp_network:
