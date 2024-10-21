@@ -1,12 +1,12 @@
 #!/bin/bash
 
-cd $WP_PATH || exit
+cd /var/www/html
 
 # Download WordPress core
 wp core download --allow-root
 
-# Wait for a moment to ensure the download completes
-sleep 10
+# # Wait for a moment to ensure the download completes
+# sleep 10
 
 # Create wp-config.php file
 wp config create --allow-root \
@@ -21,11 +21,11 @@ wp core install --allow-root \
     --title="TITLE_WORDPRESS" \
     --admin_user="ADMIN_WORDPRESS" \
     --admin_password="ADMIN_PASSWORD_WORDPRESS" \
-    --admin_email="ADMIN_EMAIL_WORDPRESS"
+    --admin_email="abc@abc.com"
 
 # Create a WordPress user
 wp user create --allow-root \
-    "WORDPRESS_USER" "WORDPRESS_USER_EMAIL" \
+    "WORDPRESS_USER" "abc@abc.com" \
     --user_pass="WORDPRESS_USER_PASSWORD"
 
 # Start PHP-FPM

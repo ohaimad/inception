@@ -6,6 +6,8 @@ sed -i -e "s/127.0.0.1/0.0.0.0/g" "/etc/mysql/mariadb.conf.d/50-server.cnf"
 # Start MariaDB service
 service mariadb start
 
+sleep 4
+
 # Create the database if it does not exist
 mariadb -uroot -p"$MYSQL_ROOT_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\`;"
 
@@ -19,7 +21,7 @@ mariadb -uroot -p"$MYSQL_ROOT_PASSWORD" -e "GRANT ALL PRIVILEGES ON \`$MYSQL_DAT
 mariadb -uroot -p"$MYSQL_ROOT_PASSWORD" -e "FLUSH PRIVILEGES;"
 
 # Stop MariaDB service
-service mariadb stop
+mariadb-admin -u root -p$MYSQL_ROOT_PASSWORD shutdown
 
 # Restart MariaDB daemon
 mariadbd

@@ -3,7 +3,7 @@ FROM debian:bullseye
 
 # Perform all operations in a single RUN command
 RUN apt-get update
-RUN apt-get install -y openssl
+RUN apt-get install -y openssl nginx
 RUN apt-get clean
 RUN mkdir -p /etc/nginx/ssl && mkdir -p /var/www/html
 RUN chmod 755 /var/www/html

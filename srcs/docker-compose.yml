@@ -33,7 +33,6 @@ services:
     build:
       context: ./nginx  # Assuming the Dockerfile for Nginx is in the same directory
       dockerfile: Dockerfile  # Specify the Dockerfile name if it's not "Dockerfile"
-    image: nginx:v1
     container_name: nginx
     restart: always
     ports:
