@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ll
+      MYSQL_USER: ohaimad
+      MYSQL_PASSWORD: 0000
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - wp_network
+
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_NAME: ll
+      WORDPRESS_DB_USER: ohaimad
+      WORDPRESS_DB_PASSWORD: 0000
+    volumes:
+      - wordpress_data:/var/www/html
+    ports:
+      - "8080:80"
+    networks:
+      - wp_network
+
+volumes:
+  mariadb_data:
+  wordpress_data:
+
+networks:
+  wp_network:

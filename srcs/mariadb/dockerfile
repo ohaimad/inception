@@ -1,5 +1,5 @@
 # Use the official MariaDB base image
-FROM ubuntu:latest
+FROM debian:bullseye
 
 # Update package list and install MariaDB server and client
 RUN apt-get update && \
@@ -14,12 +14,6 @@ COPY script.sh /var/local/bin/
 RUN chmod +x /var/local/bin/script.sh && \
     chmod +x /usr/sbin/mysqld
 
-# Run your script to install and configure MariaDB
-RUN /var/local/bin/script.sh
-
-# Expose the default MariaDB port
-EXPOSE 3306
-
 # Command to run MariaDB and listen on all IPV4 addresses
-CMD ["mysqld", "--bind-address=0.0.0.0"]
+CMD ["bash", "/var/local/bin/script.sh"]
 # CMD ["sleep" ,"infinity"]

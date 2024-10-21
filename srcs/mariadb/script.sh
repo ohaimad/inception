@@ -1,38 +1,25 @@
 #!/bin/bash
 
-# Exit immediately if a command exits with a non-zero status
-set -e
+# Update MariaDB configuration to allow external connections
+sed -i -e "s/127.0.0.1/0.0.0.0/g" "/etc/mysql/mariadb.conf.d/50-server.cnf"
 
-# Check if the MariaDB data directory is already initialized
-if [ ! -d "/var/lib/mysql/mysql" ]; then
-    echo "Initializing MariaDB data directory..."
-    mysql_install_db --user=mysql --datadir=/var/lib/mysql
-else
-    echo "MariaDB data directory already initialized. Skipping initialization."
-fi
+# Start MariaDB service
+service mariadb start
 
-# Start the MariaDB server
-echo "Starting MariaDB server..."
-/usr/bin/mysqld_safe --skip-networking &
+# Create the database if it does not exist
+mariadb -uroot -p"root" -e "CREATE DATABASE IF NOT EXISTS \`ll\`;"
 
-# Wait for MariaDB to start
-echo "Waiting for MariaDB to start..."
-sleep 5
+# Create the user if it does not exist
+mariadb -uroot -p"root" -e "CREATE USER IF NOT EXISTS 'ohaimad'@'%' IDENTIFIED BY '0000';"
 
-# Create a new root user and grant all privileges
-echo "Setting up root user and privileges..."
-mysql -u root -e "CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY 'your_password';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;"
-mysql -u root -e "FLUSH PRIVILEGES;"
+# Grant all privileges to the user on the specified database
+mariadb -uroot -p"root" -e "GRANT ALL PRIVILEGES ON \`ll\`.* TO 'ohaimad'@'%' WITH GRANT OPTION;"
 
-# Optionally, run a .sql file to set up the initial database (if provided)
-# if [ -f /var/local/bin/your_database.sql ]; then
-#     echo "Running the provided SQL script..."
-#     mysql -u root < /var/local/bin/your_database.sql
-# fi
+# Reload privileges to apply the changes
+mariadb -uroot -p"root" -e "FLUSH PRIVILEGES;"
 
-# Stop the MariaDB server gracefully
-echo "Stopping MariaDB server..."
-mysqladmin -u root -p'your_password' shutdown
+# Stop MariaDB service
+service mariadb stop
 
-echo "MariaDB setup completed successfully."
+# Restart MariaDB daemon
+mariadbd

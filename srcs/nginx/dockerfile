@@ -1,5 +1,5 @@
 # Use the official Nginx image from Docker Hub
-FROM nginx:latest
+FROM debian:bullseye
 
 # Perform all operations in a single RUN command
 RUN apt-get update && \
