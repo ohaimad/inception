@@ -18,7 +18,7 @@ stop:
 
 # Remove containers, networks, volumes, and images created by up
 down:
-	$(DOCKER_COMPOSE) -f $(COMPOSE_FILE) down
+	$(DOCKER_COMPOSE) -f $(COMPOSE_FILE) down -v
 
 # Full clean: run clean and remove all images and containers
 fclean: 

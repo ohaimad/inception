@@ -2,6 +2,8 @@
 
 cd /var/www/html
 
+chown -R www-data:www-data .
+
 # Download WordPress core
 wp core download --allow-root
 
@@ -23,7 +25,7 @@ wp core install --allow-root \
 # Create a WordPress user
 wp user create --allow-root \
     "$WP_USER" "$WP_USER_EMAIL" \
-    --user_pass="$WP_USER_PASSWORD"
+    --user_pass="$WP_USER_PASSWORD" --role=author
 
 # Start PHP-FPM
 exec php-fpm7.4 -F
