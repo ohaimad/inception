@@ -9,19 +9,19 @@ service mariadb start
 sleep 4
 
 # Create the database if it does not exist
-mariadb -uroot -p"$MYSQL_ROOT_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\`;"
+mariadb -uroot -p"$DB_ROOT_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS \`$DB_NAME\`;"
 
 # Create the user if it does not exist
-mariadb -uroot -p"$MYSQL_ROOT_PASSWORD" -e "CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
+mariadb -uroot -p"$DB_ROOT_PASSWORD" -e "CREATE USER IF NOT EXISTS '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWORD';"
 
 # Grant all privileges to the user on the specified database
-mariadb -uroot -p"$MYSQL_ROOT_PASSWORD" -e "GRANT ALL PRIVILEGES ON \`$MYSQL_DATABASE\`.* TO '$MYSQL_USER'@'%' WITH GRANT OPTION;"
+mariadb -uroot -p"$DB_ROOT_PASSWORD" -e "GRANT ALL PRIVILEGES ON \`$DB_NAME\`.* TO '$DB_USER'@'%' WITH GRANT OPTION;"
 
 # Reload privileges to apply the changes
-mariadb -uroot -p"$MYSQL_ROOT_PASSWORD" -e "FLUSH PRIVILEGES;"
+mariadb -uroot -p"$DB_ROOT_PASSWORD" -e "FLUSH PRIVILEGES;"
 
 # Stop MariaDB service
-mariadb-admin -u root -p$MYSQL_ROOT_PASSWORD shutdown
+mariadb-admin -u root -p"$DB_ROOT_PASSWORD" shutdown
 
 # Restart MariaDB daemon
 mariadbd

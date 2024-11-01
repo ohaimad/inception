@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
   mariadb:
@@ -47,12 +47,12 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: /Users/ohaimad/Desktop/DATA/mdbdata
+      device: $HOME/Desktop/DATA/mbdata
   wordpress_data:
     driver_opts:
       o: bind
       type: none
-      device: /Users/ohaimad/Desktop/DATA/wdata
+      device: $HOME/Desktop/DATA/wdata
 
 networks:
   wp_network:
