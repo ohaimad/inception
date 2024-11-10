@@ -7,11 +7,10 @@ RUN apt-get update && \
     apt-get clean
 
 # Copy the .sh and .sql files to the /var/local/bin/ directory
-COPY script.sh /var/local/bin/
+COPY ./tools/script.sh /var/local/bin/
 
 # Make sure the MariaDB daemon and script have execution permissions
 RUN chmod +x /var/local/bin/script.sh
-    # chmod +x /usr/sbin/mysqld
 
 # Command to run MariaDB and listen on all IPV4 addresses
 CMD ["/var/local/bin/script.sh"]

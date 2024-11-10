@@ -1,8 +1,8 @@
 #!/bin/bash
 
-cd /var/www/html
+sleep 10
 
-chown -R www-data:www-data .
+cd /var/www/html
 
 # Download WordPress core
 wp core download --allow-root

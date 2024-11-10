@@ -1,8 +1,8 @@
 services:
   mariadb:
     build:
-      context: ./mariadb
-      dockerfile: Dockerfile
+      context: ./requirements/mariadb
+      dockerfile: dockerfile
     image: mariadb:v1
     container_name: mariadb
     restart: always
@@ -15,8 +15,8 @@ services:
 
   wordpress:
     build:
-      context: ./wordpress
-      dockerfile: Dockerfile
+      context: ./requirements/wordpress
+      dockerfile: dockerfile
     image: wordpress:v1
     container_name: wordpress
     restart: always
@@ -29,8 +29,9 @@ services:
 
   nginx:
     build:
-      context: ./nginx  # Assuming the Dockerfile for Nginx is in the same directory
-      dockerfile: Dockerfile  # Specify the Dockerfile name if it's not "Dockerfile"
+      context: ./requirements/nginx  # Assuming the Dockerfile for Nginx is in the same directory
+      dockerfile: dockerfile  # Specify the Dockerfile name if it's not "Dockerfile"
+    image: nginx
     container_name: nginx
     restart: always
     ports:
@@ -45,12 +46,12 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: $HOME/Desktop/DATA/mbdata
+      device: $HOME/data/mbdata
   wordpress_data:
     driver_opts:
       o: bind
       type: none
-      device: $HOME/Desktop/DATA/wdata
+      device: $HOME/data/wdata
 
 networks:
   wp_network:
